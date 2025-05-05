@@ -110,8 +110,8 @@ const realizarCompra = () => {
     <h1>Omnitrix</h1>
   </div>
     <div class="carousel">
-      <button @click="antSlide" class="carousel-button ant">❮</button>
       <div class="carousel-track">
+        <div><button @click="antSlide" class="carousel-button ant">❮</button></div>
         <div
           v-for="produto in produtos"
           :key="produto.id"
@@ -199,8 +199,7 @@ h1 {
   width: 250px;
   height: 250px;
   object-fit: cover;
-  margin-top: 50px;
-  margin-bottom: 10px;
+  margin-top: 90px;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
