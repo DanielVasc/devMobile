@@ -54,6 +54,14 @@ const adicionarAoCarrinho = (produto: Produto) => {
   carrinho.value.push(produto);
   alert(`Produto "${produto.nome}" adicionado ao carrinho!`);
 };
+
+const removerDoCarrinho = (produto: Produto) => {
+  const index = carrinho.value.findIndex((item) => item.id === produto.id);
+  if (index !== -1) {
+    carrinho.value.splice(index, 1);
+    alert(`Produto "${produto.nome}" removido do carrinho!`);
+  }
+};
 </script>
 
 <template>
@@ -92,6 +100,7 @@ const adicionarAoCarrinho = (produto: Produto) => {
         <li v-for="item in carrinho" :key="item.id">
           <img :src="item.imagem" :alt="item.nome" class="cart-image" />
           <span>{{ item.nome }}</span>
+          <button @click="removerDoCarrinho(item)" class="remove-carrinho"> Remover </button>
         </li>
       </ul>
     </div>
