@@ -2,16 +2,31 @@
   <div class="app">
     <h1>Loja</h1>
     <div class="carousel">
-      <button @click="prevSlide" class="carousel-button prev">❮</button>
+      <button @click="antSlide" class="carousel-button ant">❮</button>
       <div class="carousel-track">
-        <div v-for="produto in produtos" :key="produto.id" class="carousel-item"
-          :style="{ transform: `translateX(-${indiceAtual * 100}%)` }">
+        <div
+          v-for="produto in produtos"
+          :key="produto.id"
+          class="carousel-item"
+          :style="{ transform: `translateX(-${indiceAtual * 100}%)` }"
+          @click="selecionarProduto(produto)"
+        >
           <img :src="produto.imagem" :alt="produto.nome" class="product-image" />
           <h2>{{ produto.nome }}</h2>
           <p>{{ produto.descricao }}</p>
         </div>
       </div>
-      <button @click="nextSlide" class="carousel-button next">❯</button>
+      <button @click="proxSlide" class="carousel-button prox">❯</button>
+    </div>
+
+    <div v-if="produtoSelecionado" class="produto-detalhes">
+      <h2>Detalhes do Produto</h2>
+      <img :src="produtoSelecionado.imagem" :alt="produtoSelecionado.nome" class="product-image" />
+      <h3>{{ produtoSelecionado.nome }}</h3>
+      <p>{{ produtoSelecionado.descricao }}</p>
+      <button @click="adicionarAoCarrinho(produtoSelecionado)" class="add-carrinho">
+        Adicionar ao Carrinho
+      </button>
     </div>
   </div>
 </template>
@@ -40,14 +55,23 @@ const produtos = ref<Produto[]>([
 ]);
 
 const indiceAtual = ref(0);
+const produtoSelecionado = ref<Produto | null>(null);
 
-const nextSlide = () => {
+const proxSlide = () => {
   indiceAtual.value = (indiceAtual.value + 1) % produtos.value.length;
 };
 
-const prevSlide = () => {
+const antSlide = () => {
   indiceAtual.value =
     (indiceAtual.value - 1 + produtos.value.length) % produtos.value.length;
+};
+
+const selecionarProduto = (produto: Produto) => {
+  produtoSelecionado.value = produto;
+};
+
+const adicionarAoCarrinho = (produto: Produto) => {
+  alert(`Produto "${produto.nome}" adicionado ao carrinho!`);
 };
 </script>
 
@@ -93,11 +117,34 @@ const prevSlide = () => {
   cursor: pointer;
 }
 
-.carousel-button.prev {
+.carousel-button.ant {
   left: 10px;
 }
 
-.carousel-button.next {
+.carousel-button.prox {
   right: 10px;
+}
+
+.produto-detalhes {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  display: inline-block;
+  text-align: left;
+}
+
+.add-carrinho {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-carrinho:hover {
+  background-color: #218838;
 }
 </style>
