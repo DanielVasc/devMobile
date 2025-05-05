@@ -63,8 +63,8 @@ const adicionarAoCarrinho = (produto: Produto) => {
   const itemCarrinho = carrinho.value.find((item) => item.id === produto.id);
   if (itemCarrinho) {
     itemCarrinho.quantidade! += 1;
-  } 
-  
+  }
+
   else {
     carrinho.value.push({ ...produto, quantidade: 1 });
   }
@@ -106,7 +106,9 @@ const realizarCompra = () => {
 
 <template>
   <div class="app">
-    <h1>Loja</h1>
+  <div class="header">
+    <h1>Omnitrix</h1>
+  </div>
     <div class="carousel">
       <button @click="antSlide" class="carousel-button ant">❮</button>
       <div class="carousel-track">
@@ -156,19 +158,22 @@ const realizarCompra = () => {
   text-align: center;
   font-family: Arial, sans-serif;
   margin: 0 auto;
-  padding: 20px;
-  max-width: 1200px;
-}
 
+}
+.header{
+  width: 100%;
+  height: 75px;
+  background-color: #218838;
+}
 h1 {
   font-size: 2.5rem;
-  color: #333;
-  margin-bottom: 20px;
+  color: #ffffff;
 }
 
 .carousel {
   position: relative;
   width: 80%;
+  height: 500px;
   margin: 0 auto;
   overflow: hidden;
   border-radius: 10px;
@@ -182,6 +187,7 @@ h1 {
 
 .carousel-item {
   min-width: 100%;
+  height: 500px;
   box-sizing: border-box;
   padding: 20px;
   background-color: #f9f9f9;
@@ -190,9 +196,10 @@ h1 {
 }
 
 .produto-img {
-  width: 150px;
-  height: 150px;
+  width: 250px;
+  height: 250px;
   object-fit: cover;
+  margin-top: 50px;
   margin-bottom: 10px;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -272,6 +279,8 @@ h1 {
 
 .carrinho {
   margin-top: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 10px;
