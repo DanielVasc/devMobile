@@ -98,7 +98,7 @@ const removerDoCarrinho = (produto: Produto) => {
       <h2>Carrinho</h2>
       <ul>
         <li v-for="item in carrinho" :key="item.id">
-          <img :src="item.imagem" :alt="item.nome" class="cart-image" />
+          <img :src="item.imagem" :alt="item.nome" class="carrinho-imagem" />
           <span>{{ item.nome }}</span>
           <button @click="removerDoCarrinho(item)" class="remove-carrinho"> Remover </button>
         </li>
@@ -111,6 +111,15 @@ const removerDoCarrinho = (produto: Produto) => {
 .app {
   text-align: center;
   font-family: Arial, sans-serif;
+  margin: 0 auto;
+  padding: 20px;
+  max-width: 1200px;
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 20px;
 }
 
 .carousel {
@@ -118,6 +127,8 @@ const removerDoCarrinho = (produto: Produto) => {
   width: 80%;
   margin: 0 auto;
   overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .carousel-track {
@@ -129,6 +140,9 @@ const removerDoCarrinho = (produto: Produto) => {
   min-width: 100%;
   box-sizing: border-box;
   padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  text-align: center;
 }
 
 .produto-img {
@@ -136,6 +150,8 @@ const removerDoCarrinho = (produto: Produto) => {
   height: 150px;
   object-fit: cover;
   margin-bottom: 10px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .carousel-button {
@@ -147,6 +163,13 @@ const removerDoCarrinho = (produto: Produto) => {
   border: none;
   padding: 10px;
   cursor: pointer;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.carousel-button:hover {
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 .carousel-button.ant {
@@ -162,8 +185,29 @@ const removerDoCarrinho = (produto: Produto) => {
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: inline-block;
   text-align: left;
+  max-width: 600px;
+}
+
+.produto-detalhes h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.produto-detalhes h3 {
+  font-size: 1.5rem;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.produto-detalhes p {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 15px;
 }
 
 .add-carrinho {
@@ -174,6 +218,8 @@ const removerDoCarrinho = (produto: Produto) => {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
 }
 
 .add-carrinho:hover {
@@ -185,7 +231,15 @@ const removerDoCarrinho = (produto: Produto) => {
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-align: left;
+}
+
+.carrinho h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 15px;
 }
 
 .carrinho ul {
@@ -197,12 +251,33 @@ const removerDoCarrinho = (produto: Produto) => {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
 }
 
-.cart-image {
+.carrinho-imagem {
   width: 50px;
   height: 50px;
   object-fit: cover;
   margin-right: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.remove-carrinho {
+  padding: 5px 10px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.remove-carrinho:hover {
+  background-color: #c82333;
 }
 </style>
