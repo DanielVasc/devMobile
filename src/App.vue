@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 import imagem1 from './assets/produto1.webp';
 import imagem2 from './assets/produto2.webp';
@@ -11,25 +11,34 @@ import imagem7 from './assets/produto7.webp';
 import imagem8 from './assets/produto8.webp';
 import imagem9 from './assets/produto9.webp';
 import imagem10 from './assets/produto10.webp';
+import imagem11 from './assets/produto11.jpeg';
+import imagem12 from './assets/produto12.jpeg';
+import imagem13 from './assets/produto13.jpeg';
+import imagem14 from './assets/produto14.jpeg';
 
 interface Produto {
   id: number;
   nome: string;
   imagem: string;
-  preco: string;
+  preco: number;
+  quantidade?: number;
 }
 
 const produtos = ref<Produto[]>([
-  { id: 1, nome: 'Chinelo', imagem: imagem1, preco: 'R$ 49,90' },
-  { id: 2, nome: 'Camisa branca', imagem: imagem2, preco: 'R$ 59,90' },
-  { id: 3, nome: 'Camisa branca para criança', imagem: imagem3, preco: 'R$ 69,90' },
-  { id: 4, nome: 'Camisa preta para criança', imagem: imagem4, preco: 'R$ 79,90' },
-  { id: 5, nome: 'Fantasia do Chamas', imagem: imagem5, preco: 'R$ 89,90' },
-  { id: 6, nome: 'Jogo de playstation', imagem: imagem6, preco: 'R$ 99,90' },
-  { id: 7, nome: 'Roupa de cama', imagem: imagem7, preco: 'R$ 209,90' },
-  { id: 8, nome: 'Mochila', imagem: imagem8, preco: 'R$ 837,90' },
-  { id: 9, nome: 'Mochila preta', imagem: imagem9, preco: 'R$ 00,90' },
-  { id: 10, nome: 'Mochila de rodinhas', imagem: imagem10, preco: 'R$ 23,90' },
+  { id: 1, nome: 'Chinelo', imagem: imagem1, preco: 49.9 },
+  { id: 2, nome: 'Camisa branca', imagem: imagem2, preco: 59.9 },
+  { id: 3, nome: 'Camisa branca para criança', imagem: imagem3, preco: 69.9 },
+  { id: 4, nome: 'Camisa preta para criança', imagem: imagem4, preco: 79.9 },
+  { id: 5, nome: 'Fantasia do Chamas', imagem: imagem5, preco: 89.9 },
+  { id: 6, nome: 'Jogo de playstation', imagem: imagem6, preco: 99.9 },
+  { id: 7, nome: 'Roupa de cama', imagem: imagem7, preco: 209.9 },
+  { id: 8, nome: 'Mochila', imagem: imagem8, preco: 837.9 },
+  { id: 9, nome: 'Mochila preta', imagem: imagem9, preco: 0.9 },
+  { id: 10, nome: 'Mochila de rodinhas', imagem: imagem10, preco: 23.9 },
+  { id: 11, nome: 'Perfume', imagem: imagem11, preco: 49.90 },
+  { id: 12, nome: 'Relogio', imagem: imagem12, preco: 77.90 },
+  { id: 13, nome: 'Ovo', imagem: imagem13, preco: 38.90 },
+  { id: 14, nome: 'Notebook', imagem: imagem14, preco: 8.90 },
 ]);
 
 const indiceAtual = ref(0);
@@ -51,8 +60,14 @@ const selecionarProduto = (produto: Produto) => {
 };
 
 const adicionarAoCarrinho = (produto: Produto) => {
-  carrinho.value.push(produto);
-  alert(`Produto "${produto.nome}" adicionado ao carrinho!`);
+  const itemCarrinho = carrinho.value.find((item) => item.id === produto.id);
+  if (itemCarrinho) {
+    itemCarrinho.quantidade! += 1;
+  } 
+  
+  else {
+    carrinho.value.push({ ...produto, quantidade: 1 });
+  }
 };
 
 const removerDoCarrinho = (produto: Produto) => {
@@ -61,6 +76,31 @@ const removerDoCarrinho = (produto: Produto) => {
     carrinho.value.splice(index, 1);
     alert(`Produto "${produto.nome}" removido do carrinho!`);
   }
+};
+
+const adicionarMaisUm = (produto: Produto) => {
+  const itemCarrinho = carrinho.value.find((item) => item.id === produto.id);
+  if (itemCarrinho) {
+    itemCarrinho.quantidade! += 1;
+  }
+};
+
+const removerUm = (produto: Produto) => {
+  const itemCarrinho = carrinho.value.find((item) => item.id === produto.id);
+  if (itemCarrinho && itemCarrinho.quantidade! > 1) {
+    itemCarrinho.quantidade! -= 1;
+  } else {
+    removerDoCarrinho(produto);
+  }
+};
+
+const precoTotal = computed(() =>
+  carrinho.value.reduce((total, item) => total + item.preco * (item.quantidade || 0), 0)
+);
+
+const realizarCompra = () => {
+  carrinho.value = [];
+  alert('Compra realizada!');
 };
 </script>
 
@@ -89,9 +129,7 @@ const removerDoCarrinho = (produto: Produto) => {
       <img :src="produtoSelecionado.imagem" :alt="produtoSelecionado.nome" class="produto-img" />
       <h3>{{ produtoSelecionado.nome }}</h3>
       <p>{{ produtoSelecionado.preco }}</p>
-      <button @click="adicionarAoCarrinho(produtoSelecionado)" class="add-carrinho">
-        Adicionar ao Carrinho
-      </button>
+      <button @click="adicionarAoCarrinho(produtoSelecionado)" class="add-carrinho">Adicionar ao Carrinho</button>
     </div>
 
     <div class="carrinho">
@@ -100,9 +138,15 @@ const removerDoCarrinho = (produto: Produto) => {
         <li v-for="item in carrinho" :key="item.id">
           <img :src="item.imagem" :alt="item.nome" class="carrinho-imagem" />
           <span>{{ item.nome }}</span>
-          <button @click="removerDoCarrinho(item)" class="remove-carrinho"> Remover </button>
+          <span>Quantidade: {{ item.quantidade }}</span>
+          <span>Preço: R$ {{ (item.preco * item.quantidade!).toFixed(2) }}</span>
+          <button @click="adicionarMaisUm(item)" class="add-mais-um">+</button>
+          <button @click="removerUm(item)" class="remove-um">-</button>
+          <button @click="removerDoCarrinho(item)" class="remove-carrinho">Remover</button>
         </li>
       </ul>
+      <h3>Preço Total: R$ {{ precoTotal.toFixed(2) }}</h3>
+      <button @click="realizarCompra" class="comprar">Comprar</button>
     </div>
   </div>
 </template>
@@ -279,5 +323,39 @@ h1 {
 
 .remove-carrinho:hover {
   background-color: #c82333;
+}
+
+.add-mais-um,
+.remove-um {
+  margin: 0 5px;
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.add-mais-um:hover,
+.remove-um:hover {
+  background-color: #0056b3;
+}
+
+.comprar {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #ffc107;
+  color: #333;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.comprar:hover {
+  background-color: #e0a800;
 }
 </style>
